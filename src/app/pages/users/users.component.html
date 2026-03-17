@@ -1,0 +1,52 @@
+<form class="mb-3" [formGroup]="userForm">
+    <div class="row">
+        <div class="form-group col-md-6" >
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" class="form-control" 
+                    [class.is-invalid]="userForm.get('nome')?.errors && userForm.get('nome')?.touched" formControlName="nome">
+            <div class="invalid-feedback" *ngIf="userForm.get('nome')?.hasError('required')">Preencha o nome corretamente</div>
+            <div class="invalid-feedback" *ngIf="userForm.get('nome')?.hasError('maxlength')">O campo nome não pode ultrapassar 255 carac</div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="idade">Idade</label>
+            <input id="idade" type="number" class="form-control" 
+                    [class.is-invalid]="userForm.get('idade')?.errors && userForm.get('idade')?.touched" formControlName="idade">
+            <div class="invalid-feedback" *ngIf="userForm.get('idade')?.hasError('required')">Preencha a idade corretamente</div>
+            <div class="invalid-feedback" *ngIf="userForm.get('idade')?.hasError('min')">O campo idade deve ser entre 12 e 120 anos</div>
+            <div class="invalid-feedback" *ngIf="userForm.get('idade')?.hasError('max')">O campo idade deve ter no máximo 120 anos</div>
+        </div>        
+    </div>
+    <button class="btn btn-success mt-3" [disabled]="!userForm.valid" (click)="submitForm()">Inserir</button>    
+</form>
+
+
+<!--
+
+<ul class="list-button">    
+    <li *ngFor="let usuario of users">
+        <!-- passa o parâmetro pela rota
+        <button class="btn btn-primary" [routerLink]="'/users/' + usuario ">{{ usuario }}</button>      -->
+
+        <!-- a sintaxe de routerlink abaixo funciona também, mas tem que colocar a variável entre chaves -->
+        <!-- <button class="btn btn-primary" routerLink="/users/{{ usuario }}">{{ usuario }}</button> -->
+
+
+        <!-- passa o parâmetro por queryParams -->
+         <!-- passa o parâmetro pela rota -->
+
+         <!--
+        <button class="btn btn-primary" [routerLink]="'/users/details'" [queryParams]=" { username: usuario } " >{{ usuario }}</button>
+    </li>        
+</ul>               -->
+
+<div class="row">                                       <!-- [user]  se refere ao @Input de usercard.ts (que é o componente filho)-->
+                                                        <!-- e ="usuario" se refere ao users.component.ts (que são os valores q estão no pai)-->
+    <app-user-card class="col-md-3 mb-3" *ngFor="let usuario of users" [user]="usuario" (userInfoEmitter)="getInfoUserSelecionado($event)"></app-user-card>
+</div>
+
+<div *ngIf="userSelecionado" class="mt-3 border col-md p-3">
+    <h2>Usuário selecionado</h2>
+    <p>Nome: {{ userSelecionado.nome }}</p>
+    <p>Idade: {{ userSelecionado.idade }}</p>
+</div>
+
